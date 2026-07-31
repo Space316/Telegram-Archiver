@@ -61,24 +61,43 @@ Typical uses: backing up a chat you might lose access to, migrating a community,
 
 ## ⚙️ Installation
 
+First get the code:
+
 ```bash
 git clone https://github.com/Space316/Telegram-Archiver.git
 cd Telegram-Archiver
+```
 
+Then follow **only** the block for your system.
+
+**Linux / macOS**
+
+```bash
 python3 -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
-
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+**Windows (PowerShell)**
+
+```powershell
+py -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+> If PowerShell refuses with a script-execution error, run `Set-ExecutionPolicy -Scope Process -Bypass` once and try the activate line again. It only affects that one window.
 
 <details>
 <summary><b>New to Python? What those two venv lines do</b></summary>
 
-`python3 -m venv .venv` creates an isolated copy of Python in a hidden `.venv` folder next to the project, and `source .venv/bin/activate` switches your terminal over to it. Everything you `pip install` afterwards lands inside that folder instead of your system Python, so this project can never break another one (and some Linux distros refuse a system-wide `pip install` altogether with an `externally-managed-environment` error).
+The first line creates an isolated copy of Python in a hidden `.venv` folder **inside the project folder** — nowhere else on your system. The second line switches your terminal over to it. Everything you `pip install` afterwards lands inside that folder instead of your system Python, so this project can never break another one (and some Linux distros refuse a system-wide `pip install` altogether with an `externally-managed-environment` error).
 
-When it's active your prompt starts with `(.venv)`. You need to run the `activate` line again in every new terminal. To remove everything later, just delete the `.venv` folder. It is git-ignored, so it never ends up on GitHub.
+Activating is not permanent: it only affects the terminal window you typed it in, and it never changes your system `PATH`. When it's active your prompt starts with `(.venv)`. You need to run the activate line again in every new terminal, before starting the script.
 
-The step is optional — `pip install -r requirements.txt` on its own works too.
+To undo everything, just delete the `.venv` folder — nothing else on your machine was touched. It is git-ignored, so it never ends up on GitHub.
+
+The whole step is optional — `pip install -r requirements.txt` on its own works too.
 
 </details>
 
@@ -129,6 +148,8 @@ $EDITOR config.py
 ```bash
 python3 telegram_archiver.py
 ```
+
+On Windows use `py telegram_archiver.py` instead.
 
 That's the whole command — there are no command-line flags. Everything is chosen from interactive menus, so you can just follow the questions.
 
@@ -307,6 +328,7 @@ On startup the script prints the free space it sees at `DOWNLOAD_DIR`, so you ca
 | Persian/Arabic names look reversed | `pip install arabic-reshaper python-bidi` |
 | Frequent `FloodWaitError` | Lower `TRANSFER_CONNECTIONS`, raise `MIN_MESSAGE_DELAY` |
 | `Please install these two libraries first` | `pip install rich questionary` |
+| `source` is not recognised (Windows) | Use the PowerShell block above: `.venv\Scripts\Activate.ps1` |
 | Out of disk space | Raise `MIN_FREE_DISK_GB`, set `MAX_FILE_SIZE_GB`, or use the rclone setup above |
 | The run dies whenever SSH drops | Use the tmux setup above |
 | Some messages failed | Main menu → **Retry failed messages** |
