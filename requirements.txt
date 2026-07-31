@@ -1,0 +1,14 @@
+# --- required ---
+telethon>=1.34
+rich>=13.0
+questionary>=2.0
+
+# --- strongly recommended: C-based AES, without it transfers stay around 1 MB/s ---
+cryptg>=0.4
+
+# --- optional: correct Persian/Arabic (RTL) names in the terminal ---
+arabic-reshaper>=3.0
+python-bidi>=0.4
+
+# --- optional: big ASCII-art title ---
+pyfiglet>=1.0
