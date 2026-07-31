@@ -72,6 +72,17 @@ pip install -r requirements.txt
 ```
 
 <details>
+<summary><b>New to Python? What those two venv lines do</b></summary>
+
+`python3 -m venv .venv` creates an isolated copy of Python in a hidden `.venv` folder next to the project, and `source .venv/bin/activate` switches your terminal over to it. Everything you `pip install` afterwards lands inside that folder instead of your system Python, so this project can never break another one (and some Linux distros refuse a system-wide `pip install` altogether with an `externally-managed-environment` error).
+
+When it's active your prompt starts with `(.venv)`. You need to run the `activate` line again in every new terminal. To remove everything later, just delete the `.venv` folder. It is git-ignored, so it never ends up on GitHub.
+
+The step is optional — `pip install -r requirements.txt` on its own works too.
+
+</details>
+
+<details>
 <summary><b>What each package is for</b></summary>
 
 | Package | Required? | Why |
@@ -113,34 +124,124 @@ $EDITOR config.py
 
 ---
 
-## ▶️ Usage
+## ▶️ Running it
 
 ```bash
 python3 telegram_archiver.py
 ```
 
-The first run asks for your phone number and login code (plus your 2FA password if you have one). The session is saved under `accounts/`, so you only log in once per account.
+That's the whole command — there are no command-line flags. Everything is chosen from interactive menus, so you can just follow the questions.
 
-### The flow
+### First run
+
+You'll be asked for a **name for this account** (any label you like, e.g. `main`), your **phone number**, the **login code** Telegram sends you, and your **2FA password** if you have one. The session is stored in `accounts/<name>.session`, so from the second run on you go straight to the menu.
+
+Before the menu appears, the script prints a settings summary and the free disk space it can see at `DOWNLOAD_DIR` — handy for confirming a mounted drive is really there.
+
+### The main menu
 
 ```
-1. Choose account            →  multiple accounts supported, each isolated
-2. Choose a group / channel  →  searchable arrow-key list, groups and channels separated
-3. Choose topics             →  all topics, or just the ones you pick (forums only)
-4. Choose start point        →  from the beginning, from a message link, or last N messages
-5. Optional sender prefix    →  add the original sender's name to each message
-6. Sit back                  →  destination chat is created and the history is copied
+◆ M A I N   M E N U ◆
+        account Amir-1
+
+» 📦  Pick a group/channel to copy
+  👤  Copy only one person's messages from a topic
+  🔁  Retry failed messages
+  🧹  Reset a chat's progress
+  🔄  Switch account
+  ❌  Exit
 ```
 
-### The main menu also offers
+Move with the ↑ ↓ arrow keys and confirm with **Enter**. Almost every screen also has a **⬅ Back** entry that steps one question backwards instead of cancelling the whole job.
 
-- 🔁 **Retry failed messages** — re-attempt only the messages that failed earlier
-- 🧹 **Reset a chat's progress** — start that chat over from scratch (a fresh destination is created)
-- 👤 **Archive a single author** — filter the whole run by one sender
+| Option | What it does | When to use it |
+|---|---|---|
+| 📦 **Pick a group/channel to copy** | The normal full archive. Creates the destination chat and copies the history of the chat (or of the topics you select). | Your main starting point |
+| 👤 **Copy only one person's messages from a topic** | Same as above, but only messages from **one sender** are copied. The list includes every member plus a special *🎭 Anonymous admin* entry for messages posted as the group itself. | Extracting one person's posts, e.g. an announcements author |
+| 🔁 **Retry failed messages** | Re-sends only the messages that failed earlier (recorded in `progress.json`). Duplicate protection is on for these. | After a run finished with some skipped/failed items |
+| 🧹 **Reset a chat's progress** | Deletes the saved progress entry for a chat, so the next run starts from scratch with a **fresh destination chat**. The already-copied chat is not deleted. | A run went wrong and you want a clean start |
+| 🔄 **Switch account** | Returns to the account picker; each account keeps its own session and its own `progress.json`. | Archiving with a different Telegram account |
+| ❌ **Exit** | Closes the connection cleanly. | Done |
 
-### Resuming
+### The questions during a copy run
 
-Progress is written to `progress.json` (atomically, with a `.bak` copy). If a run is interrupted for any reason, just run the script again and pick the same chat — it continues from the next message and remembers the old-id → new-id mapping, so replies keep working across runs.
+After picking a chat you'll be asked a short series of questions:
+
+**1. Which chat?** — a searchable list of your groups and channels (just start typing to filter). A summary of the chosen chat is printed, including whether it is a forum, whether content protection is on, and how many pinned messages it has.
+
+**2. Which topics?** *(forums only)* — either **all topics**, or a multi-select list where you tick the ones you want. Message counts are shown next to each topic name.
+
+**3. How much should be copied?**
+
+| Choice | Meaning |
+|---|---|
+| 📚 **Everything (full history)** | From the very first message onwards |
+| 🔢 **Only the most recent messages** | Asks for a number, e.g. `200`. With multiple selected topics it means the last N **of each topic** |
+
+**4. Where should copying start?**
+
+| Choice | Meaning |
+|---|---|
+| ⏮ **From the beginning (or where it stopped last time)** | Normal behaviour, resumes automatically |
+| 🔗 **From a specific message — paste its link** | In Telegram: right-click / long-press a message → *Copy Message Link*. Private-chat `t.me/c/...` links work, and a bare message id works too. The message you point at is shown as a preview so a wrong link is obvious immediately |
+
+**5. Prefix every copied message with the sender's name?** — `Yes` puts the original sender's name in **bold** on the first line (`«Ali»`). Very useful for topic archives where every post would otherwise look like it came from you. For multi-topic runs you can decide this per topic.
+
+Then the copying starts, with a live progress bar per file and a running counter such as `✔ 1,240 copied so far (album of 3, id=90218)`.
+
+### Resuming after an interruption
+
+Progress is written to `progress.json` (atomically, with a `.bak` copy). If a run is interrupted — Ctrl+C, connection drop, closed laptop — just run the script again and pick the same chat. It continues from the next message and remembers the old-id → new-id mapping, so replies keep pointing at the right messages across runs.
+
+---
+
+## 🖥 Running long jobs with tmux (recommended on a server)
+
+**The problem:** if you run the script over SSH, your terminal is the parent of the process. The moment your SSH session drops — Wi-Fi hiccup, laptop sleep, closing the window — the process is killed with it. On a big group a full archive can take hours, so this happens more often than you'd think.
+
+**The fix:** `tmux` keeps a terminal running **on the server itself**. You attach to it to watch, detach to leave it running, and reattach later from anywhere — even from a different computer. The script keeps working while you're gone.
+
+(`nohup` and `&` are the classic alternatives, but they don't work here: this tool is interactive and needs a real terminal for its menus.)
+
+### Install it
+
+```bash
+sudo apt install tmux        # Debian / Ubuntu
+sudo dnf install tmux        # Fedora
+brew install tmux            # macOS
+```
+
+### Use it
+
+```bash
+# 1) create a named session
+tmux new -s archiver
+
+# 2) inside it, start the script as usual
+cd ~/Telegram-Archiver
+source .venv/bin/activate
+python3 telegram_archiver.py
+
+# 3) leave it running and go away:  press  Ctrl+b  then  d
+
+# 4) come back later (even after a reboot of your own laptop)
+tmux attach -t archiver
+```
+
+### The handful of commands worth knowing
+
+| Command / keys | What it does |
+|---|---|
+| `tmux new -s archiver` | Create a session named `archiver` |
+| **`Ctrl+b`** then **`d`** | **Detach** — leaves everything running in the background |
+| `tmux attach -t archiver` | Re-attach to that session |
+| `tmux ls` | List running sessions |
+| **`Ctrl+b`** then **`[`** | Scroll mode — ↑ ↓ / PageUp to read back through the log, `q` to quit scrolling |
+| `tmux kill-session -t archiver` | Destroy the session (stops the script) |
+
+> 💡 `Ctrl+b` is tmux's "prefix" key: you press and release it, *then* press the second key. It is not a combination held together.
+
+> ⚠️ Detaching is `Ctrl+b` `d`. Pressing **`Ctrl+c`** would stop the script itself — though thanks to `progress.json` you could simply start it again and it would resume.
 
 ---
 
@@ -205,7 +306,9 @@ On startup the script prints the free space it sees at `DOWNLOAD_DIR`, so you ca
 | Frequent `FloodWaitError` | Lower `TRANSFER_CONNECTIONS`, raise `MIN_MESSAGE_DELAY` |
 | `Please install these two libraries first` | `pip install rich questionary` |
 | Out of disk space | Raise `MIN_FREE_DISK_GB`, set `MAX_FILE_SIZE_GB`, or use the rclone setup above |
+| The run dies whenever SSH drops | Use the tmux setup above |
 | Some messages failed | Main menu → **Retry failed messages** |
+| A run copied 0 messages | Main menu → **Reset a chat's progress**, then try again |
 
 ---
 
