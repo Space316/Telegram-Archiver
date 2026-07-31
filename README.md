@@ -10,7 +10,7 @@ No *"Forwarded from"* tags. Topics, albums, replies and pins preserved. Resumabl
 [![Telethon](https://img.shields.io/badge/Telethon-MTProto-2CA5E0?logo=telegram&logoColor=white)](https://docs.telethon.dev/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-🇮🇷 **[نسخهٔ فارسی این راهنما ← README.fa.md](README.fa.md)**
+🇮🇷 **[نسخهٔ فارسی ← README.fa.md](README.fa.md)**
 
 </div>
 
