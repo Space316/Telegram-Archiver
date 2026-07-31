@@ -1,0 +1,26 @@
+# --- secrets: never commit these ---
+config.py
+*.session
+*.session-journal
+
+# --- runtime data ---
+accounts/
+downloads/
+progress.json
+progress.json.bak
+*.bak
+*.log
+
+# --- python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# --- editors / OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
