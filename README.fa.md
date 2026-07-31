@@ -97,7 +97,7 @@ pip install -r requirements.txt
 
 ```powershell
 py -m venv .venv
-.venv\Scripts\Activate.ps1
+.venv\\Scripts\\Activate.ps1
 pip install -r requirements.txt
 ```
 
@@ -329,4 +329,62 @@ tmux attach -t archiver
 
 </div>
 
+```bash
+curl https://rclone.org/install.sh | sudo bash
+rclone config                      # یک remote مثلا به نام gdrive بسازید
+mkdir -p ~/gdrive
+rclone mount gdrive: ~/gdrive --vfs-cache-mode writes --daemon
 ```
+
+```python
+DOWNLOAD_DIR = "/home/YOUR_USER/gdrive/telegram_archiver/downloads"
+ACCOUNTS_DIR = "/home/YOUR_USER/gdrive/telegram_archiver/accounts"
+```
+
+<div dir="rtl" align="right">
+
+موقع اجرا فضای آزاد مسیر `DOWNLOAD_DIR` چاپ می‌شود، پس همان‌جا می‌فهمید ماونت واقعا گرفته یا نه.
+
+</details>
+
+---
+
+## 🚧 محدودیت‌ها
+
+چند چیز هست که بهتر است از قبل بدانید تا غافلگیر نشوید:
+
+- تلگرام در **گروه‌های ساده (basic group)** تاپیک ندارد؛ اگر گروه اصلی از این نوع باشد، به جایش یک سوپرگروه معمولی بدون تاپیک ساخته می‌شود.
+- ساختن تعداد زیادی تاپیک پشت سر هم ممکن است به محدودیت تلگرام بخورد، برای همین بین هرکدام کمی مکث گذاشته شده.
+- در چت‌هایی که **«محدودیت ذخیرهٔ محتوا»** روشن است، ارسال با رفرنس ممکن نیست؛ اسکریپت این را از اول تشخیص می‌دهد و تا جایی که بشود سراغ دانلود و آپلود دوباره می‌رود.
+- سقف حجم آپلود به اکانت شما بستگی دارد: **۲ گیگابایت** به صورت عادی و **۴ گیگابایت** با تلگرام پرمیوم (خودکار تشخیص داده می‌شود).
+- اگر از یک مقصد قبلی استفاده شود ولی `progress.json` متناظرش موجود نباشد، اسکریپت نمی‌داند اجرای قبلی تا کجا رفته و از اول شروع می‌کند — که ممکن است پیام تکراری بسازد.
+
+---
+
+## 🧯 اگر به مشکل خوردید
+
+| نشانه | راه‌حل |
+|---|---|
+| سرعت انتقال حدود 1MB/s گیر کرده | `pip install cryptg` |
+| نام‌های فارسی برعکس نمایش داده می‌شوند | `pip install arabic-reshaper python-bidi` |
+| مدام `FloodWaitError` می‌گیرید | مقدار `TRANSFER_CONNECTIONS` را کم و `MIN_MESSAGE_DELAY` را زیاد کنید |
+| پیام `Please install these two libraries first` | `pip install rich questionary` |
+| دستور `source` روی ویندوز شناخته نمی‌شود | از بلوک PowerShell بالا استفاده کنید: `.venv\\Scripts\\Activate.ps1` |
+| فضای دیسک تمام شد | `MIN_FREE_DISK_GB` را بالا ببرید، برای `MAX_FILE_SIZE_GB` مقدار بگذارید یا سراغ rclone بروید |
+| با قطع شدن SSH اجرا هم می‌میرد | از tmux استفاده کنید (بخش بالا) |
+| چند پیام نرسیده‌اند | منوی اصلی ← **Retry failed messages** |
+| یک اجرا هیچ پیامی کپی نکرد | منوی اصلی ← **Reset a chat's progress** و بعد دوباره امتحان کنید |
+
+---
+
+## ⚖️ قانون و حریم خصوصی
+
+این ابزار همانند **کلاینت شخصی خود شما** و از طریق API رسمی MTProto عمل می‌کند. مسئولیت نحوهٔ استفاده از این ابزار و هرگونه استفادهٔ نادرست از آن، تنها بر عهدهٔ خود کاربر است. توجه داشته باشید که فایل‌های `*.session` دسترسی کامل به اکانت شما را فراهم می‌کنند، بنابراین آن‌ها را همانند رمز عبور محرمانه نگه دارید.
+
+---
+
+## 📄 لایسنس
+
+[MIT](LICENSE)
+
+</div>
