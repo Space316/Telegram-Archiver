@@ -329,18 +329,4 @@ tmux attach -t archiver
 
 </div>
 
-```bash
-curl https://rclone.org/install.sh | sudo bash
-rclone config                      # یک remote مثلا به نام gdrive بسازید
-mkdir -p ~/gdrive
-rclone mount gdrive: ~/gdrive --vfs-cache-mode writes --daemon
 ```
-
-```python
-DOWNLOAD_DIR = "/home/YOUR_USER/gdrive/telegram_archiver/downloads"
-ACCOUNTS_DIR = "/home/YOUR_USER/gdrive/telegram_archiver/accounts"
-```
-
-<div dir="rtl" align="right">
-
-موقع اجرا فضای آزاد مسیر `DOWNLOAD_DIR` چاپ می‌شود، پس همان‌جا می‌فهمید ما
