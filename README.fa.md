@@ -97,7 +97,7 @@ pip install -r requirements.txt
 
 ```powershell
 py -m venv .venv
-.venv\\Scripts\\Activate.ps1
+.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
 
@@ -106,7 +106,7 @@ pip install -r requirements.txt
 > اگر PowerShell اجازهٔ اجرای اسکریپت را نداد، یک بار دستور `Set-ExecutionPolicy -Scope Process -Bypass` را بزنید و دوباره سراغ خط activate بروید. این تنظیم فقط روی همان پنجره اثر دارد و جای دیگری را دست نمی‌زند.
 
 <details>
-<summary><b>تازه‌کارید؟ آن دو خط venv اصلا برای چیست؟</b></summary>
+<summary><b>آن دو خط venv اصلا برای چیست؟</b></summary>
 
 خط اول یک نسخهٔ جدا و مستقل از پایتون را در پوشه‌ای مخفی به نام `.venv` **داخل خود پوشهٔ پروژه** می‌سازد؛ هیچ جای دیگری از سیستم شما دست نمی‌خورد. خط دوم هم به ترمینال می‌گوید از این به بعد از همان پایتون استفاده کن.
 
@@ -369,7 +369,7 @@ ACCOUNTS_DIR = "/home/YOUR_USER/gdrive/telegram_archiver/accounts"
 | نام‌های فارسی برعکس نمایش داده می‌شوند | `pip install arabic-reshaper python-bidi` |
 | مدام `FloodWaitError` می‌گیرید | مقدار `TRANSFER_CONNECTIONS` را کم و `MIN_MESSAGE_DELAY` را زیاد کنید |
 | پیام `Please install these two libraries first` | `pip install rich questionary` |
-| دستور `source` روی ویندوز شناخته نمی‌شود | از بلوک PowerShell بالا استفاده کنید: `.venv\\Scripts\\Activate.ps1` |
+| دستور `source` روی ویندوز شناخته نمی‌شود | از بلوک PowerShell بالا استفاده کنید: `.venv\Scripts\Activate.ps1` |
 | فضای دیسک تمام شد | `MIN_FREE_DISK_GB` را بالا ببرید، برای `MAX_FILE_SIZE_GB` مقدار بگذارید یا سراغ rclone بروید |
 | با قطع شدن SSH اجرا هم می‌میرد | از tmux استفاده کنید (بخش بالا) |
 | چند پیام نرسیده‌اند | منوی اصلی ← **Retry failed messages** |
