@@ -63,30 +63,55 @@
 
 ## ⚙️ نصب
 
+اول کد را بگیرید:
+
 </div>
 
 ```bash
 git clone https://github.com/Space316/Telegram-Archiver.git
 cd Telegram-Archiver
-
-python3 -m venv .venv
-source .venv/bin/activate        # ویندوز: .venv\Scripts\activate
 ```
 
+<div dir="rtl" align="right">
+
+سپس **فقط** بلوک مربوط به سیستم‌عامل خودتان را اجرا کنید.
+
+**لینوکس / مک**
+
+</div>
+
 ```bash
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
 <div dir="rtl" align="right">
 
+**ویندوز (PowerShell)**
+
+</div>
+
+```powershell
+py -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+<div dir="rtl" align="right">
+
+> اگر PowerShell اجازهٔ اجرای اسکریپت را نداد، یک بار دستور `Set-ExecutionPolicy -Scope Process -Bypass` را بزنید و دوباره خط activate را اجرا کنید. این تنظیم فقط روی همان پنجره اثر دارد.
+
 <details>
 <summary><b>تازه‌کارید؟ آن دو خط venv برای چیست؟</b></summary>
 
-دستور `python3 -m venv .venv` یک نسخهٔ جدا و ایزولهٔ پایتون در پوشهٔ مخفی `.venv` کنار پروژه می‌سازد و `source .venv/bin/activate` ترمینال را به آن محیط منتقل می‌کند. از آن به بعد، هر `pip install` داخل همان پوشه نصب می‌شود و نه روی پایتون سیستم؛ پس این پروژه هرگز با پروژه‌های دیگر تداخل پیدا نمی‌کند (بعضی توزیع‌های لینوکس اصلاً اجازهٔ نصب سراسری نمی‌دهند و خطای `externally-managed-environment` می‌دهند).
+خط اول یک نسخهٔ جدا و ایزولهٔ پایتون را در پوشهٔ مخفی `.venv` **داخل همان پوشهٔ پروژه** می‌سازد — هیچ جای دیگری از سیستم شما دست نمی‌خورد. خط دوم ترمینال را به آن محیط منتقل می‌کند. از آن به بعد، هر `pip install` داخل همان پوشه نصب می‌شود و نه روی پایتون سیستم؛ پس این پروژه هرگز با پروژه‌های دیگر تداخل پیدا نمی‌کند (بعضی توزیع‌های لینوکس اصلاً اجازهٔ نصب سراسری نمی‌دهند و خطای `externally-managed-environment` می‌دهند).
 
-وقتی فعال باشد، ابتدای خط ترمینال `(.venv)` نوشته می‌شود. در هر ترمینال جدید باید دوباره خط `activate` را بزنید. برای پاک کردن همه‌چیز، کافی است پوشهٔ `.venv` را حذف کنید. این پوشه در `.gitignore` هست پس روی گیت‌هاب آپلود نمی‌شود.
+فعال کردن محیط دائمی نیست: فقط روی همان پنجرهٔ ترمینالی که دستور را در آن زده‌اید اثر دارد و `PATH` سیستم را برای همیشه تغییر نمی‌دهد. وقتی فعال باشد، ابتدای خط ترمینال `(.venv)` نوشته می‌شود. در هر ترمینال جدید باید قبل از اجرای اسکریپت دوباره خط activate را بزنید.
 
-این مرحله اختیاری است — فقط `pip install -r requirements.txt` هم کار می‌کند.
+برای برگرداندن همه‌چیز، کافی است پوشهٔ `.venv` را حذف کنید؛ هیچ چیز دیگری روی سیستم شما تغییر نکرده است. این پوشه در `.gitignore` هست پس روی گیت‌هاب آپلود نمی‌شود.
+
+کل این مرحله اختیاری است — فقط `pip install -r requirements.txt` هم کار می‌کند.
 
 </details>
 
@@ -145,6 +170,8 @@ python3 telegram_archiver.py
 ```
 
 <div dir="rtl" align="right">
+
+در ویندوز به جای آن `py telegram_archiver.py` را بزنید.
 
 همین یک دستور کافی است — هیچ فلگ و آرگومان خط فرمانی وجود ندارد؛ همهٔ انتخاب‌ها از طریق منوهای تعاملی انجام می‌شود و کافی است به سؤال‌ها جواب بدهید.
 
@@ -335,6 +362,7 @@ ACCOUNTS_DIR = "/home/YOUR_USER/gdrive/telegram_archiver/accounts"
 | نام‌های فارسی برعکس نمایش داده می‌شوند | `pip install arabic-reshaper python-bidi` |
 | خطای مکرر `FloodWaitError` | کاهش `TRANSFER_CONNECTIONS` و افزایش `MIN_MESSAGE_DELAY` |
 | پیام `Please install these two libraries first` | `pip install rich questionary` |
+| در ویندوز دستور `source` شناخته نمی‌شود | از بلوک PowerShell بالا استفاده کنید: `.venv\Scripts\Activate.ps1` |
 | کمبود فضای دیسک | افزایش `MIN_FREE_DISK_GB`، تنظیم `MAX_FILE_SIZE_GB` یا استفاده از rclone |
 | با قطع شدن SSH اجرا می‌میرد | از روش tmux بالا استفاده کنید |
 | بعضی پیام‌ها ناموفق ماندند | منوی اصلی ← **Retry failed messages** |
