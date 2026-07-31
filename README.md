@@ -142,7 +142,7 @@ Before the menu appears, the script prints a settings summary and the free disk 
 
 ```
 ◆ M A I N   M E N U ◆
-        account Amir-1
+        account main
 
 » 📦  Pick a group/channel to copy
   👤  Copy only one person's messages from a topic
@@ -151,6 +151,8 @@ Before the menu appears, the script prints a settings summary and the free disk 
   🔄  Switch account
   ❌  Exit
 ```
+
+The label after `account` is simply the name you chose for the logged-in account on the first run.
 
 Move with the ↑ ↓ arrow keys and confirm with **Enter**. Almost every screen also has a **⬅ Back** entry that steps one question backwards instead of cancelling the whole job.
 
