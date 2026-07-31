@@ -160,7 +160,7 @@ python3 telegram_archiver.py
 
 ```
 ◆ M A I N   M E N U ◆
-        account Amir-1
+        account main
 
 » 📦  Pick a group/channel to copy
   👤  Copy only one person's messages from a topic
@@ -171,6 +171,8 @@ python3 telegram_archiver.py
 ```
 
 <div dir="rtl" align="right">
+
+عبارت روبروی `account` فقط همان نامی است که خودتان در اجرای اول برای اکانت انتخاب کرده‌اید.
 
 با کلیدهای ↑ ↓ حرکت کنید و با **Enter** انتخاب کنید. تقریباً هر صفحه یک گزینهٔ **⬅ Back** هم دارد که فقط یک سؤال به عقب برمی‌گردد، نه اینکه کل کار را لغو کند.
 
