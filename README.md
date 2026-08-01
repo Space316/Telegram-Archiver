@@ -16,6 +16,42 @@ No *"Forwarded from"* tags. Topics, albums, replies and pins preserved. Resumabl
 
 ---
 
+## 🎬 Video tutorial
+
+A full walkthrough of the tool — from a clean Ubuntu server to every menu, screen and edge case — recorded as a terminal simulation. One continuous video, 9:38, 1080p, on-screen subtitles, no audio.
+
+| | |
+|---|---|
+| 🇬🇧 **English** | [`telegram-archiver-full-en.mp4`](../../releases/latest) |
+| 🇮🇷 **Persian / فارسی** | [`telegram-archiver-full-fa.mp4`](../../releases/latest) |
+
+Both files live under [**Releases**](../../releases/latest) so cloning the repo stays lightweight.
+
+<details>
+<summary><b>What each chapter covers</b></summary>
+
+| Chapter | Topic |
+|---|---|
+| 0 | Preparing a clean server: `apt`, Python, pip, tmux, dependencies |
+| 1 | API credentials, first login, the main menu, picking a chat |
+| 2 | Creating the destination chat and the hidden bio marker |
+| 3 | Selecting which topics to archive |
+| 4 | Keeping the original sender's name |
+| 5 | Full history vs. last N messages, and choosing a start point |
+| 6 | The copy run: media, parallel transfers, FloodWait |
+| 7 | What exactly gets preserved |
+| 8 | Interrupting and resuming (`progress.json`) |
+| 9 | Failures, automatic retry and the final report |
+| 10 | Verifying an archive (health check) |
+| 11 | Copying only one person's messages |
+| 12 | Resetting progress, accounts and troubleshooting |
+
+</details>
+
+> The recording is a faithful simulation of the interface. Chat names, message counts and ids shown in it are demo data.
+
+---
+
 ## 📖 What is this?
 
 `telegram_archiver.py` is a single-file, interactive terminal tool built on [Telethon](https://docs.telethon.dev/).
