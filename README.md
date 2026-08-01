@@ -22,8 +22,8 @@ A full walkthrough of the tool — from a clean Ubuntu server to every menu, scr
 
 | | |
 |---|---|
-| 🇬🇧 **English** | [`telegram-archiver-full-en.mp4`](../../releases/latest) |
-| 🇮🇷 **Persian / فارسی** | [`telegram-archiver-full-fa.mp4`](../../releases/latest) |
+| 🇬🇧 **English** | [`Telegram-Archiver-Full-en.mp4`](../../releases/latest) |
+| 🇮🇷 **Persian / فارسی** | [`Telegram-Archiver-Full-fa.mp4`](../../releases/latest) |
 
 Both files live under [**Releases**](../../releases/latest) so cloning the repo stays lightweight.
 
